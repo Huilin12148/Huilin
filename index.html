@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Huilin — Product Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --white:   #ffffff;
+      --black:   #0C0C0C;
+      --text:    #111118;
+      --muted:   #6b7280;
+      --border:  #e5e7eb;
+      --bg-alt:  #f7f8fa;
+      --accent:  #FF3D5A;
+      --accent2: #fff0f2;
+      --radius:  10px;
+      --radius-lg: 16px;
+      --sans:    'Space Grotesk', system-ui, sans-serif;
+      --body:    'Inter', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--body); background: var(--white); color: var(--text);
+           line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 48px;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s;
+    }
+    nav.scrolled { border-color: var(--border); }
+    .nav-logo { font-family: var(--sans); font-weight: 700; font-size: 17px; letter-spacing: -.02em; }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a { font-family: var(--sans); font-size: 14px; font-weight: 500;
+                   color: var(--muted); transition: color .15s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--text); color: var(--white) !important;
+      padding: 8px 18px; border-radius: 100px; font-size: 13px !important;
+      transition: background .15s !important;
+    }
+    .nav-cta:hover { background: var(--accent) !important; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr minmax(200px, 300px);
+      gap: 48px;
+      align-items: center;
+      padding: 80px 48px 80px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .hero-text { display: flex; flex-direction: column; }
+    .hero-photo {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-photo img {
+      width: 100%; max-width: 280px; aspect-ratio: 3/4;
+      object-fit: cover; object-position: center top;
+      border-radius: 180px 180px 24px 24px;
+      box-shadow: 0 24px 64px rgba(0,0,0,.10);
+    }
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--sans); font-size: 13px; font-weight: 500;
+      color: var(--muted); letter-spacing: .04em;
+      margin-bottom: 28px;
+    }
+    .dot-live {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 0 rgba(34,197,94,.4);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(34,197,94,.4); }
+      70%  { box-shadow: 0 0 0 7px rgba(34,197,94,0); }
+      100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+    }
+
+    .hero-title {
+      font-family: var(--sans);
+      font-size: clamp(48px, 7vw, 88px);
+      font-weight: 700;
+      letter-spacing: -.04em;
+      line-height: 1.0;
+      color: var(--text);
+      max-width: 14ch;
+      margin-bottom: 32px;
+    }
+    .hero-title em { font-style: italic; font-weight: 300; color: var(--accent); }
+
+    .hero-sub {
+      font-family: var(--body);
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 48ch;
+      line-height: 1.65;
+      margin-bottom: 44px;
+    }
+
+    .hero-tags {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 48px;
+    }
+    .hero-tag {
+      padding: 6px 16px; border-radius: 100px;
+      border: 1.5px solid var(--border);
+      font-family: var(--sans); font-size: 13px; font-weight: 500;
+      color: var(--text);
+    }
+
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--text); color: var(--white);
+      font-family: var(--sans); font-size: 14px; font-weight: 600;
+      padding: 14px 28px; border-radius: 100px;
+      transition: background .15s, transform .15s;
+    }
+    .btn-primary:hover { background: var(--accent); transform: translateY(-1px); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1.5px solid var(--border); color: var(--text);
+      font-family: var(--sans); font-size: 14px; font-weight: 500;
+      padding: 13px 24px; border-radius: 100px;
+      transition: border-color .15s, color .15s;
+    }
+    .btn-ghost:hover { border-color: var(--text); }
+
+    /* SECTION */
+    section { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      letter-spacing: .1em; color: var(--muted);
+      margin-bottom: 48px;
+    }
+
+    /* WORK GRID */
+    .work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+    .card {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+      background: var(--white);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.08);
+    }
+    .card-featured { grid-column: 1 / -1; }
+
+    .card-thumb {
+      width: 100%; aspect-ratio: 3/2;
+      background: var(--bg-alt);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; position: relative;
+    }
+    .card-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: top left;
+    }
+    /* Gifty phone mockup: show full image with padding */
+    .card-thumb img.phone-mockup {
+      object-fit: contain;
+      object-position: center;
+      padding: 12px;
+      background: #f0ebe7;
+    }
+    .card-thumb-placeholder {
+      font-family: var(--sans); font-size: 13px; color: var(--muted);
+      text-align: center; padding: 24px;
+    }
+
+    .card-body { padding: 28px; }
+    .card-num {
+      font-family: var(--sans); font-size: 11px; font-weight: 500;
+      color: var(--muted); letter-spacing: .08em;
+      margin-bottom: 10px;
+    }
+    .card-title {
+      font-family: var(--sans); font-size: 20px; font-weight: 600;
+      letter-spacing: -.02em; margin-bottom: 10px; line-height: 1.25;
+    }
+    .card-desc {
+      font-size: 14px; color: var(--muted); line-height: 1.6;
+      margin-bottom: 20px; max-width: 60ch;
+    }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .card-tag {
+      padding: 4px 12px; border-radius: 100px;
+      border: 1px solid var(--border);
+      font-family: var(--sans); font-size: 12px; color: var(--muted);
+    }
+    .card-tag.accent { background: var(--accent2); border-color: #ffc0c8; color: var(--accent); }
+
+    /* FUN FACT */
+    .fun-fact {
+      border-radius: var(--radius-lg);
+      background: var(--black); color: var(--white);
+      padding: 48px 56px;
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 32px; align-items: center;
+      margin-top: 24px;
+    }
+    .fun-fact-label {
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      letter-spacing: .1em; color: rgba(255,255,255,.4);
+      margin-bottom: 14px;
+    }
+    .fun-fact-text {
+      font-family: var(--sans); font-size: 20px; font-weight: 500;
+      line-height: 1.4; letter-spacing: -.01em;
+      max-width: 50ch;
+    }
+    .fun-fact-text a { color: var(--accent); text-decoration: underline; }
+    .fun-fact-stat {
+      text-align: center; flex-shrink: 0;
+    }
+    .stat-num {
+      font-family: var(--sans); font-size: 48px; font-weight: 700;
+      letter-spacing: -.04em; color: var(--accent);
+    }
+    .stat-label {
+      font-family: var(--sans); font-size: 12px; color: rgba(255,255,255,.5);
+      margin-top: 4px;
+    }
+
+    /* CONTACT */
+    .contact-wrap {
+      border-top: 1px solid var(--border);
+      padding-top: 80px;
+      display: flex; justify-content: space-between; align-items: flex-end;
+      flex-wrap: wrap; gap: 32px;
+    }
+    .contact-title {
+      font-family: var(--sans); font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700; letter-spacing: -.03em; line-height: 1.1;
+    }
+    .contact-title em { font-style: italic; font-weight: 300; color: var(--accent); }
+    .contact-links { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 48px;
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--sans); font-size: 12px; color: var(--muted);
+    }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    nav { opacity: 0; animation: fadeNav .4s ease .05s forwards; }
+    @keyframes fadeNav { to { opacity: 1; } }
+    .hero { opacity: 0; animation: fadeHero .6s cubic-bezier(.22,.68,0,1.1) .15s forwards; }
+    @keyframes fadeHero { to { opacity: 1; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, nav, .hero { animation: none !important; opacity: 1 !important; transform: none !important; transition: none !important; }
+      .dot-live { animation: none; }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      nav { padding: 18px 24px; }
+      .nav-links { gap: 20px; }
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 100px 24px 60px;
+        gap: 32px;
+      }
+      .hero-photo { order: -1; }
+      .hero-photo img { max-width: 160px; border-radius: 100px 100px 16px 16px; }
+      section { padding: 72px 24px; }
+      .work-grid { grid-template-columns: 1fr; }
+      .card-featured { grid-column: 1; }
+      .fun-fact { grid-template-columns: 1fr; padding: 32px; gap: 24px; }
+      .contact-wrap { padding-top: 56px; }
+      footer { padding: 24px; }
+      .hero-title { font-size: 40px; }
+    }
+    @media (max-width: 900px) {
+      nav { padding: 18px 32px; }
+      section { padding: 72px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <span class="nav-logo"><a href="index.html" style="color:inherit;text-decoration:none;">HL.</a></span>
+  <div class="nav-links">
+    <a href="#work" class="nav-hide">Work</a>
+    <a href="#about" class="nav-hide">About</a>
+    <a href="#contact" class="nav-cta">Say hello →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow">
+      <span class="dot-live"></span>
+      Available for work
+    </div>
+    <h1 class="hero-title">
+      Shaping <em>AI-powered</em> product experiences
+    </h1>
+    <p class="hero-sub">
+      Hello, I'm Huilin — a Product / UX Designer turning complex AI ideas into scalable, human-centered commerce flows. Previously: animation designer and artist.
+    </p>
+    <div class="hero-tags">
+      <span class="hero-tag">AI Product Design</span>
+      <span class="hero-tag">Commerce UX</span>
+      <span class="hero-tag">Rapid Prototyping</span>
+    </div>
+    <div class="hero-actions">
+      <a href="#work" class="btn-primary">View work ↓</a>
+      <a href="#contact" class="btn-ghost">Get in touch</a>
+    </div>
+  </div>
+  <div class="hero-photo">
+    <img src="avatar.jpg" alt="Huilin">
+  </div>
+</div>
+
+<!-- WORK -->
+<section id="work">
+  <div class="section-label">SELECTED WORK — 2025–2026</div>
+
+  <div class="work-grid">
+
+    <!-- Gifty (featured) -->
+    <article class="card card-featured reveal" style="cursor:pointer" onclick="location.href='gifty.html'">
+      <div class="card-thumb">
+        <img src="gifty-cover.png" alt="Gifty — mobile AI gifting app" class="phone-mockup">      </div>
+      <div class="card-body">
+        <p class="card-num">01 / FEATURED</p>
+        <h2 class="card-title">Gifty</h2>
+        <p class="card-desc">A mobile AI gifting experience that helps users move from uncertain intent to personalized gift matches, comparison, and saving.</p>
+        <div class="card-tags">
+          <span class="card-tag accent">AI</span>
+          <span class="card-tag">Mobile App</span>
+          <span class="card-tag">Commerce</span>
+          <span class="card-tag">Gift Assistant</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- IRS.gov -->
+    <article class="card reveal" style="cursor:pointer" onclick="location.href='irs.html'">
+      <div class="card-thumb">
+        <img src="irs-cover.png" alt="IRS.gov Homepage Redesign" style="object-position: top left;">
+      </div>
+      <div class="card-body">
+        <p class="card-num">02</p>
+        <h2 class="card-title">IRS.gov Homepage Redesign</h2>
+        <p class="card-desc">Simplifying high-frequency tax service navigation for millions of Americans.</p>
+        <div class="card-tags">
+          <span class="card-tag">UX Research</span>
+          <span class="card-tag">Information Architecture</span>
+          <span class="card-tag">Service Design</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Senior-Friendly UI -->
+    <article class="card reveal" style="cursor:pointer" onclick="location.href='senior.html'">
+      <div class="card-thumb">
+        <img src="senior-ui-cover.png" alt="Senior-Friendly UI Generator" style="object-position: center;">
+      </div>
+      <div class="card-body">
+        <p class="card-num">03</p>
+        <h2 class="card-title">Senior-Friendly UI Generator</h2>
+        <p class="card-desc">A reusable AI-assisted UX skill for generating senior-friendly interface patterns from research insights and competitor analysis.</p>
+        <div class="card-tags">
+          <span class="card-tag accent">AI-Assisted UX</span>
+          <span class="card-tag">Accessibility</span>
+          <span class="card-tag">Service Design</span>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- Fun Fact -->
+  <div class="fun-fact reveal">
+    <div>
+      <p class="fun-fact-label">FUN FACT</p>
+      <p class="fun-fact-text">
+        I contributed AI-generated visuals to an interview featuring Prof. Weijie Su, currently at OpenAI — published on <a href="#" target="_blank">Bilibili</a>.
+      </p>
+      <div style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;">
+        <span style="font-family:var(--sans);font-size:12px;padding:5px 14px;border-radius:100px;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6)">OpenAI Interview</span>
+        <span style="font-family:var(--sans);font-size:12px;padding:5px 14px;border-radius:100px;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6)">AI-Generated Visuals</span>
+        <span style="font-family:var(--sans);font-size:12px;padding:5px 14px;border-radius:100px;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6)">Bilibili</span>
+      </div>
+    </div>
+    <div class="fun-fact-stat">
+      <div class="stat-num">16K</div>
+      <div class="stat-label">Views on Bilibili</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrap">
+    <div>
+      <h2 class="contact-title">Let's build thoughtful<br><em>AI experiences</em></h2>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:huilinw26@gmail.com" class="btn-primary">Email ↗</a>
+      <a href="#" class="btn-ghost">Resume ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026, HUILIN</span>
+  <span>Product / UX Designer</span>
+</footer>
+
+<script>
+  // Nav scroll style
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.transitionDelay = (i * 60) + 'ms';
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.07, rootMargin: '0px 0px -48px 0px' });
+  revealEls.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

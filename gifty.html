@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gifty — Case Study · Huilin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --white:    #ffffff;
+      --text:     #111118;
+      --muted:    #6b7280;
+      --soft:     #9ca3af;
+      --border:   #e5e7eb;
+      --bg-alt:   #f7f8fa;
+      --bg-warm:  #fdf6f0;
+      --accent:   #FF3D5A;
+      --accent2:  #fff0f2;
+      --black:    #0C0C0C;
+      --sans:     'Space Grotesk', system-ui, sans-serif;
+      --body:     'Inter', system-ui, sans-serif;
+      --radius:   12px;
+      --radius-lg:20px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--body); background: var(--white); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 48px;
+      background: rgba(255,255,255,.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: var(--sans); font-weight: 700; font-size: 17px; letter-spacing: -.02em; }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--muted);
+      transition: color .15s;
+    }
+    .nav-back:hover { color: var(--text); }
+
+    /* LAYOUT */
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 0 48px; }
+    .wrap-narrow { max-width: 720px; margin: 0 auto; padding: 0 48px; }
+
+    /* HERO */
+    .hero {
+      padding: 140px 48px 80px;
+      max-width: 1000px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: center;
+    }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .hero-tag {
+      padding: 4px 12px; border-radius: 100px;
+      border: 1.5px solid var(--border);
+      font-family: var(--sans); font-size: 12px; color: var(--muted);
+    }
+    .hero h1 {
+      font-family: var(--sans); font-size: 44px; font-weight: 700;
+      letter-spacing: -.03em; line-height: 1.1; margin-bottom: 20px;
+    }
+    .hero p { font-size: 16px; color: var(--muted); line-height: 1.65; max-width: 46ch; }
+    .hero-img { display: flex; align-items: center; justify-content: center; }
+    .hero-img img {
+      width: 100%; max-width: 280px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 32px 80px rgba(0,0,0,.12);
+    }
+
+    /* SECTION CHROME */
+    .section { padding: 96px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+    .eyebrow {
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      letter-spacing: .1em; color: var(--soft);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: var(--sans); font-size: clamp(26px, 3vw, 36px);
+      font-weight: 700; letter-spacing: -.025em; line-height: 1.2;
+      max-width: 22ch; margin-bottom: 48px;
+    }
+    .section-title em { font-style: normal; color: var(--accent); }
+    .section-body {
+      font-size: 16px; color: var(--muted); line-height: 1.75;
+      max-width: 62ch;
+    }
+
+    /* STATS STRIP */
+    .stats-strip {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 24px; margin-top: 48px;
+    }
+    .stat-card {
+      background: var(--bg-alt); border-radius: var(--radius);
+      padding: 28px 32px; border: 1px solid var(--border);
+    }
+    .stat-num {
+      font-family: var(--sans); font-size: 36px; font-weight: 700;
+      letter-spacing: -.03em; color: var(--accent); margin-bottom: 8px;
+    }
+    .stat-desc { font-size: 14px; color: var(--muted); line-height: 1.55; }
+
+    /* THREE COLUMNS */
+    .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+    .col-card {
+      background: var(--bg-alt); border-radius: var(--radius);
+      border: 1px solid var(--border); padding: 28px 24px;
+    }
+    .col-icon { font-size: 22px; margin-bottom: 14px; }
+    .col-label {
+      font-family: var(--sans); font-size: 14px; font-weight: 600;
+      margin-bottom: 8px; letter-spacing: -.01em;
+    }
+    .col-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* UNCERTAINTY CARDS */
+    .uncertainty-list { display: flex; flex-direction: column; gap: 0; margin-top: 40px; }
+    .uncertainty-item {
+      display: grid; grid-template-columns: 100px 1fr;
+      gap: 24px; align-items: start;
+      padding: 24px 0; border-bottom: 1px solid var(--border);
+    }
+    .uncertainty-item:first-child { border-top: 1px solid var(--border); }
+    .uncertainty-type {
+      font-family: var(--sans); font-size: 12px; font-weight: 600;
+      letter-spacing: .04em; color: var(--accent);
+      padding-top: 2px;
+    }
+    .uncertainty-text { font-size: 15px; color: var(--text); line-height: 1.55; }
+
+    /* HMW */
+    .hmw {
+      background: var(--black); color: var(--white);
+      border-radius: var(--radius-lg); padding: 72px 56px;
+      text-align: center; margin: 0;
+    }
+    .hmw-label {
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      letter-spacing: .1em; color: rgba(255,255,255,.35);
+      margin-bottom: 24px;
+    }
+    .hmw-q {
+      font-family: var(--sans); font-size: clamp(24px, 3.5vw, 40px);
+      font-weight: 700; letter-spacing: -.03em; line-height: 1.2;
+      max-width: 20ch; margin: 0 auto;
+    }
+    .hmw-q em { font-style: italic; font-weight: 300; color: var(--accent); }
+
+    /* STRATEGY TABLE */
+    .strategy-table {
+      width: 100%; border-collapse: collapse; margin-top: 40px;
+      font-size: 14px;
+    }
+    .strategy-table th {
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      letter-spacing: .08em; color: var(--soft);
+      text-align: left; padding: 12px 16px;
+      border-bottom: 2px solid var(--border);
+    }
+    .strategy-table td {
+      padding: 18px 16px; border-bottom: 1px solid var(--border);
+      vertical-align: top; line-height: 1.55;
+    }
+    .strategy-table tr:last-child td { border-bottom: none; }
+    .strategy-pill {
+      display: inline-block;
+      background: var(--accent2); color: var(--accent);
+      font-family: var(--sans); font-size: 12px; font-weight: 600;
+      padding: 3px 12px; border-radius: 100px;
+    }
+
+    /* FEATURE SECTION */
+    .feature { padding: 80px 0; border-top: 1px solid var(--border); }
+    .feature-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: center;
+    }
+    .feature-inner.flip { direction: rtl; }
+    .feature-inner.flip > * { direction: ltr; }
+    .feature-num {
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      letter-spacing: .1em; color: var(--soft);
+      margin-bottom: 10px;
+    }
+    .feature-title {
+      font-family: var(--sans); font-size: 24px; font-weight: 700;
+      letter-spacing: -.02em; line-height: 1.2; margin-bottom: 14px;
+    }
+    .feature-desc { font-size: 15px; color: var(--muted); line-height: 1.7; }
+    .feature-img {
+      background: var(--bg-warm); border-radius: var(--radius-lg);
+      border: 1px solid var(--border); overflow: hidden;
+      aspect-ratio: 4/5; display: flex; align-items: center; justify-content: center;
+    }
+    .feature-img img { width: 100%; height: 100%; object-fit: cover; }
+    .feature-img-placeholder {
+      font-family: var(--sans); font-size: 13px; color: var(--muted); text-align: center; padding: 24px;
+    }
+
+    /* OUTCOME */
+    .outcome-strip {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: var(--radius-lg);
+      overflow: hidden; margin-top: 48px;
+    }
+    .outcome-cell {
+      background: var(--white); padding: 28px 20px; text-align: center;
+    }
+    .outcome-label {
+      font-family: var(--sans); font-size: 12px; font-weight: 500;
+      color: var(--muted); margin-bottom: 8px;
+    }
+    .outcome-val {
+      font-family: var(--sans); font-size: 20px; font-weight: 700;
+      letter-spacing: -.02em; color: var(--text);
+    }
+
+    /* BACK LINK */
+    .back-row {
+      padding: 64px 0 96px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: center;
+    }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--sans); font-size: 14px; font-weight: 600;
+      background: var(--text); color: var(--white);
+      padding: 14px 28px; border-radius: 100px;
+      transition: background .15s;
+    }
+    .back-btn:hover { background: var(--accent); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    nav { animation: fadeIn .4s ease forwards; }
+    .hero { animation: fadeIn .5s ease .1s both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, nav, .hero { animation: none !important; opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 800px) {
+      nav { padding: 18px 24px; }
+      .hero { grid-template-columns: 1fr; padding: 110px 24px 60px; gap: 40px; }
+      .hero-img { order: -1; }
+      .wrap, .wrap-narrow { padding: 0 24px; }
+      .section { padding: 64px 0; }
+      .three-col { grid-template-columns: 1fr; gap: 16px; }
+      .stats-strip { grid-template-columns: 1fr; }
+      .feature-inner, .feature-inner.flip { grid-template-columns: 1fr; gap: 32px; direction: ltr; }
+      .feature-img { aspect-ratio: 16/10; }
+      .outcome-strip { grid-template-columns: repeat(3, 1fr); }
+      .hmw { padding: 48px 32px; }
+    }
+    @media (max-width: 500px) {
+      .outcome-strip { grid-template-columns: repeat(2, 1fr); }
+      .uncertainty-item { grid-template-columns: 80px 1fr; gap: 16px; }
+      .strategy-table { font-size: 13px; }
+      .strategy-table td, .strategy-table th { padding: 14px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">HL.</span>
+  <a href="index.html" class="nav-back">← Back to work</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="hero-tags">
+      <span class="hero-tag">Mobile App</span>
+      <span class="hero-tag">AI</span>
+      <span class="hero-tag">Commerce</span>
+      <span class="hero-tag">Gift Assistant</span>
+    </div>
+    <h1>Gifty</h1>
+    <p>A mobile AI gifting experience that helps users move from uncertain intent to personalized gift matches, comparison, and saving.</p>
+  </div>
+  <div class="hero-img">
+    <!-- Replace with: <img src="gifty-cover.png" alt="Gifty app"> -->
+    <img src="gifty-cover.png" alt="Gifty app screenshot">
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<div class="wrap">
+  <div class="section reveal">
+    <p class="eyebrow">01 — Problem</p>
+    <h2 class="section-title">The gift market is full of products — but users still struggle to make the right choice.</h2>
+    <div class="stats-strip">
+      <div class="stat-card">
+        <div class="stat-num">56%</div>
+        <div class="stat-desc">of US consumers say gift-giving should feel joyful, yet it often feels stressful.</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$10.1B</div>
+        <div class="stat-desc">is wasted each year on unsuitable gifts in the US alone.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESEARCH -->
+<div class="wrap">
+  <div class="section reveal">
+    <p class="eyebrow">02 — Research</p>
+    <h2 class="section-title">Users are not casually browsing gifts — they are trying to find a suitable option under constraints.</h2>
+    <div class="three-col">
+      <div class="col-card">
+        <div class="col-icon">🎯</div>
+        <div class="col-label">Who am I buying for?</div>
+        <div class="col-desc">Users need context about their relationship with the recipient.</div>
+      </div>
+      <div class="col-card">
+        <div class="col-icon">🎁</div>
+        <div class="col-label">What is the gift for?</div>
+        <div class="col-desc">Occasion shapes what feels appropriate and meaningful.</div>
+      </div>
+      <div class="col-card">
+        <div class="col-icon">💰</div>
+        <div class="col-label">What price range works?</div>
+        <div class="col-desc">Budget is a constraint users need to consider from the very beginning.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAIN POINTS -->
+<div class="wrap">
+  <div class="section reveal">
+    <p class="eyebrow">02 — User Insights</p>
+    <h2 class="section-title">Gift decisions get stuck in three kinds of uncertainty.</h2>
+    <p class="section-body">Based on interviews with young gift-givers and 17 user feedback tags. Three recurring blockers emerged.</p>
+    <div class="uncertainty-list">
+      <div class="uncertainty-item">
+        <div class="uncertainty-type">Uncertain</div>
+        <div class="uncertainty-text">Not sure what the recipient actually likes — hard to tell their real interests and preferences.</div>
+      </div>
+      <div class="uncertainty-item">
+        <div class="uncertainty-type">Uncertain</div>
+        <div class="uncertainty-text">Not sure how to compare multiple gift options — users don't know how to evaluate candidates side by side.</div>
+      </div>
+      <div class="uncertainty-item">
+        <div class="uncertainty-type">Uncertain</div>
+        <div class="uncertainty-text">Not sure when to prepare — users often procrastinate, missing the right window to buy.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HMW -->
+<div class="wrap">
+  <div class="hmw reveal">
+    <p class="hmw-label">DESIGN QUESTION</p>
+    <p class="hmw-q">How might we help users find the <em>right gift</em> with limited information?</p>
+  </div>
+</div>
+
+<!-- DESIGN STRATEGIES -->
+<div class="wrap" style="padding-top: 96px;">
+  <div class="section reveal">
+    <p class="eyebrow">03 — Design Strategies</p>
+    <h2 class="section-title">We translated three uncertainties into three design strategies.</h2>
+    <table class="strategy-table">
+      <thead>
+        <tr>
+          <th>User Pain Point</th>
+          <th>Design Strategy</th>
+          <th>What it enables</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Not sure what the recipient likes</td>
+          <td><span class="strategy-pill">Guided Filtering</span></td>
+          <td>Narrows the decision space through relationship, occasion, and budget signals.</td>
+        </tr>
+        <tr>
+          <td>Not sure how to compare options</td>
+          <td><span class="strategy-pill">AI Comparison</span></td>
+          <td>Helps users compare candidate gifts more clearly, side by side.</td>
+        </tr>
+        <tr>
+          <td>Not sure when to prepare</td>
+          <td><span class="strategy-pill">Countdown Reminder</span></td>
+          <td>Reminds users to prepare in time before the occasion.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- FEATURE 1 -->
+<div class="wrap">
+  <div class="feature reveal">
+    <div class="feature-inner">
+      <div>
+        <p class="feature-num">FEATURE 01 / AI-GUIDED FILTERING</p>
+        <h3 class="feature-title">AI-Guided Filtering</h3>
+        <p class="feature-desc">By asking for relationship, occasion, budget, and preference signals, the system narrows the search space before showing recommendations — including product options early in the journey.</p>
+      </div>
+      <div class="feature-img">
+        <video src="feature-filtering.mp4" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;border-radius:0;"></video>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURE 2 -->
+<div class="wrap">
+  <div class="feature reveal">
+    <div class="feature-inner flip">
+      <div>
+        <p class="feature-num">FEATURE 02 / AI MATCHING & COMPARISON</p>
+        <h3 class="feature-title">AI-Matching &amp; Comparison</h3>
+        <p class="feature-desc">Recommendations are presented as ranked matches rather than generic product listings, helping users evaluate options with context about why each gift was suggested.</p>
+      </div>
+      <div class="feature-img">
+        <video src="feature-comparison.mp4" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;border-radius:0;"></video>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURE 3 -->
+<div class="wrap">
+  <div class="feature reveal">
+    <div class="feature-inner">
+      <div>
+        <p class="feature-num">FEATURE 03 / REMINDER & TIMING</p>
+        <h3 class="feature-title">Reminder &amp; Timing</h3>
+        <p class="feature-desc">Gift decisions are time-sensitive. Users often know the occasion date before they know what to buy. The reminder feature brings gift ideas back to the home page, helping users prepare in time without adding extra work.</p>
+      </div>
+      <div class="feature-img">
+        <img src="feature-timing.png" alt="Gifty reminder and timing feature">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OUTCOME -->
+<div class="wrap">
+  <div class="section reveal">
+    <p class="eyebrow">04 — Outcome</p>
+    <h2 class="section-title">From uncertainty to shortlist in <em>one guided journey.</em></h2>
+    <div class="outcome-strip">
+      <div class="outcome-cell">
+        <div class="outcome-label">AI Filtering</div>
+        <div class="outcome-val">3 steps</div>
+      </div>
+      <div class="outcome-cell">
+        <div class="outcome-label">Match Quality</div>
+        <div class="outcome-val">Ranked</div>
+      </div>
+      <div class="outcome-cell">
+        <div class="outcome-label">Comparison</div>
+        <div class="outcome-val">Side by side</div>
+      </div>
+      <div class="outcome-cell">
+        <div class="outcome-label">Reminders</div>
+        <div class="outcome-val">Auto</div>
+      </div>
+      <div class="outcome-cell">
+        <div class="outcome-label">Platform</div>
+        <div class="outcome-val">iOS</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BACK -->
+<div class="wrap">
+  <div class="back-row reveal">
+    <a href="index.html" class="back-btn">← Back to all work</a>
+  </div>
+</div>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.07, rootMargin: '0px 0px -48px 0px' });
+  els.forEach((el, i) => {
+    el.style.transitionDelay = '0ms';
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>

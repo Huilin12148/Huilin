@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IRS.gov Redesign — Case Study · Huilin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --white:    #ffffff;
+      --text:     #111118;
+      --muted:    #6b7280;
+      --soft:     #9ca3af;
+      --border:   #e5e7eb;
+      --bg-alt:   #f7f8fa;
+      --bg-blue:  #eef4ff;
+      --accent:   #2563eb;
+      --accent2:  #dbeafe;
+      --black:    #0C0C0C;
+      --deloitte: #86bc25;
+      --sans:     'Space Grotesk', system-ui, sans-serif;
+      --body:     'Inter', system-ui, sans-serif;
+      --radius:   12px;
+      --radius-lg:20px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--body); background: var(--white); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 48px;
+      background: rgba(255,255,255,.9); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: var(--sans); font-weight: 700; font-size: 17px; letter-spacing: -.02em; }
+    .nav-logo a { color: inherit; }
+    .nav-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--muted); transition: color .15s; }
+    .nav-back:hover { color: var(--text); }
+
+    /* LAYOUT */
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 0 48px; }
+    .wrap-narrow { max-width: 720px; margin: 0 auto; padding: 0 48px; }
+
+    /* HERO */
+    .hero {
+      padding: 140px 48px 80px;
+      max-width: 1000px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: center;
+    }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .hero-tag { padding: 4px 12px; border-radius: 100px; border: 1.5px solid var(--border); font-family: var(--sans); font-size: 12px; color: var(--muted); }
+    .hero h1 { font-family: var(--sans); font-size: 44px; font-weight: 700; letter-spacing: -.03em; line-height: 1.1; margin-bottom: 20px; }
+    .hero p { font-size: 16px; color: var(--muted); line-height: 1.65; max-width: 46ch; }
+    .hero-img { display: flex; align-items: center; justify-content: center; }
+    .hero-img img { width: 100%; max-width: 440px; border-radius: var(--radius-lg); box-shadow: 0 24px 60px rgba(0,0,0,.1); object-fit: cover; object-position: top left; }
+
+    /* SECTION */
+    .section { padding: 96px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+    .eyebrow { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: .1em; color: var(--soft); text-transform: uppercase; margin-bottom: 20px; }
+    .section-title { font-family: var(--sans); font-size: clamp(24px, 3vw, 34px); font-weight: 700; letter-spacing: -.025em; line-height: 1.2; max-width: 24ch; margin-bottom: 32px; }
+    .section-title em { font-style: normal; color: var(--accent); }
+    .section-body { font-size: 15.5px; color: var(--muted); line-height: 1.75; max-width: 62ch; }
+
+    /* OVERVIEW GRID */
+    .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
+    .ov-card { background: var(--bg-alt); border-radius: var(--radius); border: 1px solid var(--border); padding: 24px; }
+    .ov-label { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--accent); margin-bottom: 10px; }
+    .ov-text { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* TWO COL */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
+    .insight-card { background: var(--bg-alt); border-radius: var(--radius); border: 1px solid var(--border); padding: 24px; }
+    .insight-label { font-family: var(--sans); font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 10px; letter-spacing: .04em; }
+    .insight-items { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .insight-items li { font-size: 13.5px; color: var(--text); line-height: 1.55; padding-left: 16px; position: relative; }
+    .insight-items li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 12px; }
+
+    /* FULL IMAGE */
+    .full-img { margin-top: 40px; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
+    .full-img img { width: 100%; display: block; }
+    .full-img-dark { margin-top: 40px; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid #222; background: #000000; }
+    .full-img-dark img { width: 100%; display: block; }
+    .full-img-placeholder { background: var(--bg-alt); height: 320px; display: flex; align-items: center; justify-content: center; font-family: var(--sans); font-size: 13px; color: var(--muted); }
+
+    /* PAIN SECTION */
+    .pain-row { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 40px; align-items: start; }
+    .pain-chart { background: var(--bg-alt); border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; }
+    .pain-chart-title { font-family: var(--sans); font-size: 13px; font-weight: 600; margin-bottom: 16px; }
+    .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .bar-label { font-size: 12px; color: var(--muted); width: 90px; flex-shrink: 0; }
+    .bar-track { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 4px; background: var(--accent); }
+    .pain-findings { display: flex; flex-direction: column; gap: 16px; }
+    .pain-finding { background: var(--bg-alt); border-radius: var(--radius); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 18px 20px; font-size: 14px; color: var(--text); line-height: 1.6; }
+
+    /* HMW */
+    .hmw { background: var(--black); color: var(--white); border-radius: var(--radius-lg); padding: 72px 56px; text-align: center; margin: 0; }
+    .hmw-label { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: .1em; color: rgba(255,255,255,.35); margin-bottom: 24px; }
+    .hmw-q { font-family: var(--sans); font-size: clamp(22px, 3vw, 36px); font-weight: 700; letter-spacing: -.03em; line-height: 1.25; max-width: 22ch; margin: 0 auto; }
+    .hmw-q em { font-style: italic; font-weight: 300; color: #60a5fa; }
+
+    /* STRATEGY CARDS */
+    .strategy-list { display: flex; flex-direction: column; gap: 0; margin-top: 40px; }
+    .strategy-item { display: grid; grid-template-columns: 36px 1fr; gap: 20px; align-items: start; padding: 28px 0; border-bottom: 1px solid var(--border); }
+    .strategy-item:first-child { border-top: 1px solid var(--border); }
+    .strategy-num { font-family: var(--sans); font-size: 13px; font-weight: 700; color: var(--accent); padding-top: 2px; }
+    .strategy-body {}
+    .strategy-title { font-family: var(--sans); font-size: 17px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 8px; }
+    .strategy-desc { font-size: 14px; color: var(--muted); line-height: 1.65; max-width: 56ch; }
+    .strategy-img { margin-top: 16px; border-radius: var(--radius); overflow: hidden; border: 1px solid #222; background: #000; }
+    .strategy-img img { width: 100%; display: block; }
+    .strategy-img-placeholder { height: 160px; display: flex; align-items: center; justify-content: center; font-family: var(--sans); font-size: 12px; color: var(--muted); background: #000; }
+
+    /* BEFORE / AFTER */
+    .before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
+    .ba-card { border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
+    .ba-label { padding: 12px 20px; font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: .06em; border-bottom: 1px solid var(--border); }
+    .ba-label.before { background: #fff4f4; color: #dc2626; }
+    .ba-label.after { background: #f0fdf4; color: #16a34a; }
+    .ba-img { background: var(--bg-alt); }
+    .ba-img img { width: 100%; display: block; }
+    .ba-placeholder { height: 240px; display: flex; align-items: center; justify-content: center; font-family: var(--sans); font-size: 12px; color: var(--muted); }
+
+    /* OUTCOME */
+    .outcome-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 40px; }
+    .outcome-card { background: var(--bg-alt); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 36px 32px; text-align: center; }
+    .outcome-num { font-family: var(--sans); font-size: 56px; font-weight: 700; letter-spacing: -.04em; line-height: 1; margin-bottom: 12px; }
+    .outcome-num.before { color: #dc2626; }
+    .outcome-num.after { color: #16a34a; }
+    .outcome-arrow { font-size: 24px; color: var(--muted); margin-bottom: 8px; }
+    .outcome-label { font-family: var(--sans); font-size: 13px; color: var(--muted); }
+
+    .behavior-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 32px; }
+    .behavior-card { background: var(--bg-alt); border-radius: var(--radius); border: 1px solid var(--border); padding: 20px 16px; text-align: center; }
+    .behavior-val { font-family: var(--sans); font-size: 20px; font-weight: 700; letter-spacing: -.02em; color: var(--text); margin-bottom: 6px; }
+    .behavior-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* BACK */
+    .back-row { padding: 64px 0 96px; border-top: 1px solid var(--border); display: flex; justify-content: center; }
+    .back-btn { display: inline-flex; align-items: center; gap: 10px; font-family: var(--sans); font-size: 14px; font-weight: 600; background: var(--text); color: var(--white); padding: 14px 28px; border-radius: 100px; transition: background .15s; }
+    .back-btn:hover { background: var(--accent); }
+
+    /* DELOITTE BADGE */
+    .deloitte-badge { display: inline-flex; align-items: center; gap: 8px; background: #f0f8e8; border: 1px solid #c8e8a0; color: #3d6b00; border-radius: 100px; padding: 5px 14px; font-family: var(--sans); font-size: 12px; font-weight: 600; margin-bottom: 20px; }
+    .deloitte-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--deloitte); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    nav { animation: fadeIn .4s ease forwards; }
+    .hero { animation: fadeIn .5s ease .1s both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, nav, .hero { animation: none !important; opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 800px) {
+      nav { padding: 18px 24px; }
+      .hero { grid-template-columns: 1fr; padding: 110px 24px 60px; gap: 40px; }
+      .hero-img { order: -1; }
+      .wrap, .wrap-narrow { padding: 0 24px; }
+      .section { padding: 64px 0; }
+      .overview-grid, .two-col, .before-after, .pain-row { grid-template-columns: 1fr; }
+      .outcome-row { grid-template-columns: 1fr 1fr; }
+      .behavior-grid { grid-template-columns: 1fr 1fr; }
+      .hmw { padding: 48px 32px; }
+      .strategy-item { grid-template-columns: 28px 1fr; gap: 14px; }
+    }
+    @media (max-width: 480px) {
+      .outcome-row { grid-template-columns: 1fr; }
+      .behavior-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo"><a href="index.html">HL.</a></span>
+  <a href="index.html" class="nav-back">← Back to work</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="deloitte-badge"><span class="deloitte-dot"></span>Deloitte Project</div>
+    <div class="hero-tags">
+      <span class="hero-tag">UX Research</span>
+      <span class="hero-tag">Information Architecture</span>
+      <span class="hero-tag">Service Design</span>
+    </div>
+    <h1>IRS.gov Homepage Redesign</h1>
+    <p>Simplifying high-frequency tax service navigation for millions of Americans.</p>
+  </div>
+  <div class="hero-img">
+    <img src="irs-cover.png" alt="IRS.gov redesign">
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<div class="wrap">
+  <div class="section reveal">
+    <p class="eyebrow">01 — Overview</p>
+    <h2 class="section-title">IRS.gov is a critical self-service entry point for U.S. taxpayers.</h2>
+    <div class="overview-grid">
+      <div class="ov-card">
+        <p class="ov-label">Target Users</p>
+        <p class="ov-text">U.S. taxpayers who self-serve on IRS.gov to file returns, track refunds, and manage their tax obligations.</p>
+      </div>
+      <div class="ov-card">
+        <p class="ov-label">Design Scope</p>
+        <p class="ov-text">Homepage information architecture, entry point hierarchy, and navigation clarity for high-frequency tasks.</p>
+      </div>
+      <div class="ov-card">
+        <p class="ov-label">My Role</p>
+        <p class="ov-text">UX Research, Information Architecture, Wireframing, Prototype testing, Before/After evaluation.</p>
+      </div>
+      <div class="ov-card">
+        <p class="ov-label">Service Scope</p>
+        <p class="ov-text">IRS.gov homepage serving over 150 million U.S. taxpayers annually across filing, refund tracking, and account management.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESEARCH -->
+<div class="wrap">
+  <div class="section reveal">
+    <p class="eyebrow">02 — Research</p>
+    <h2 class="section-title">Users are not browsing — they are trying to confirm the next steps.</h2>
+    <p class="section-body">With seconds of landing on the page, users need to feel that IRS has the info tied to their priority goal.</p>
+    <div class="two-col">
+      <div class="insight-card">
+        <p class="insight-label">FOR SENIORS</p>
+        <ul class="insight-items">
+          <li>MFG: easy entry point</li>
+          <li>Start filing process smoothly</li>
+        </ul>
+      </div>
+      <div class="insight-card">
+        <p class="insight-label">WAITING FOR MONEY</p>
+        <ul class="insight-items">
+          <li>MFG: Track refund progress</li>
+          <li>Credit or debit soon will arrive</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INSIGHT -->
+<div class="wrap">
+  <div class="section reveal">
+    <p class="eyebrow">02 — Key Insight</p>
+    <h2 class="section-title">Similar entry points sit side by side, forcing users to interpret the difference before clicking.</h2>
+    <p class="section-body">The main issue isn't visibility. The issue is the judgment cost users face after seeing the options.</p>
+  </div>
+</div>
+
+<!-- PAIN POINT -->
+<div class="wrap">
+  <div class="section reveal">
+    <p class="eyebrow">03 — Pain Points</p>
+    <h2 class="section-title">Users saw the entry points, but still hesitated before choosing the next step.</h2>
+    <div class="pain-row">
+      <div class="pain-chart">
+        <p class="pain-chart-title">Average task completion time (seconds)</p>
+        <div class="bar-row">
+          <span class="bar-label">Filing taxes</span>
+          <div class="bar-track"><div class="bar-fill" style="width:85%"></div></div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Track refund</span>
+          <div class="bar-track"><div class="bar-fill" style="width:62%"></div></div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Make payment</span>
+          <div class="bar-track"><div class="bar-fill" style="width:78%"></div></div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Get transcript</span>
+          <div class="bar-track"><div class="bar-fill" style="width:90%"></div></div>
+        </div>
+      </div>
+      <div class="pain-findings">
+        <div class="pain-finding">Not sure which entry point to click — multiple similar-looking options with different labels.</div>
+        <div class="pain-finding">Not sure if sign-in is required before starting — users hesitate at the threshold.</div>
+        <div class="pain-finding">Not sure the right path leads to their specific goal before they commit to clicking.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HMW -->
+<div class="wrap" style="padding-top: 96px;">
+  <div class="hmw reveal">
+    <p class="hmw-label">DESIGN QUESTION</p>
+    <p class="hmw-q">How might we help users quickly identify the <em>correct next step</em> among distributed and similar service entry points?</p>
+  </div>
+</div>
+
+<!-- DESIGN STRATEGIES -->
+<div class="wrap" style="padding-top: 96px;">
+  <div class="section reveal">
+    <p class="eyebrow">04 — Design Strategies</p>
+    <h2 class="section-title">Three strategies to reduce decision cost on the homepage.</h2>
+    <div class="strategy-list">
+
+      <div class="strategy-item">
+        <div class="strategy-num">01</div>
+        <div class="strategy-body">
+          <p class="strategy-title">Prioritize 90 high-frequency tasks and create a clear homepage starting zone.</p>
+          <p class="strategy-desc">Surface the most common tax actions at the top — filing, refund tracking, and payment — so users immediately see the path relevant to their goal without scanning the full page.</p>
+          <div class="strategy-img">
+            <img src="strategy-1.png" alt="Wireframe — Homepage Hierarchy">
+          </div>
+        </div>
+      </div>
+
+      <div class="strategy-item">
+        <div class="strategy-num">02</div>
+        <div class="strategy-body">
+          <p class="strategy-title">Merge similar entry points to reduce comparison cost before the click.</p>
+          <p class="strategy-desc">Consolidate near-duplicate links (e.g. "File" vs "Free File" vs "File for Free") into a single labeled entry that explains the difference in one line, eliminating ambiguous side-by-side choices.</p>
+          <div class="strategy-img">
+            <img src="strategy-2.png" alt="Merge similar entry points — before/after">
+          </div>
+        </div>
+      </div>
+
+      <div class="strategy-item">
+        <div class="strategy-num">03</div>
+        <div class="strategy-body">
+          <p class="strategy-title">Help users decide whether sign in is required before entering a service path.</p>
+          <p class="strategy-desc">Show sign-in status context inline with entry points, so users know upfront what they will need and don't get blocked mid-task when they reach a login wall.</p>
+          <div class="strategy-img">
+            <img src="strategy-3.png" alt="Redesigned sign-in module" style="max-width:480px;margin:0 auto;display:block;">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FINAL DESIGN -->
+<div class="wrap">
+  <div class="section reveal">
+    <p class="eyebrow">05 — Final Design</p>
+    <h2 class="section-title">IRS.gov</h2>
+    <p class="section-body">Redesigned homepage with a task-focused layout, merged entry points, and contextual sign-in guidance.</p>
+    <div class="full-img-dark" style="margin-top: 32px;">
+      <img src="irs-final.png" alt="IRS.gov final redesign" style="width:100%;display:block;">
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE / AFTER -->
+<div class="wrap">
+  <div class="section reveal">
+    <p class="eyebrow">05 — Before / After</p>
+    <h2 class="section-title">Clearer hierarchy, fewer decisions.</h2>
+    <div class="before-after">
+      <div class="ba-card">
+        <div class="ba-label before">BEFORE</div>
+        <div class="ba-img">
+          <img src="irs-before.png" alt="IRS.gov before redesign">
+        </div>
+      </div>
+      <div class="ba-card">
+        <div class="ba-label after">AFTER</div>
+        <div class="ba-img">
+          <img src="irs-after.png" alt="IRS.gov after redesign">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OUTCOME -->
+<div class="wrap">
+  <div class="section reveal">
+    <p class="eyebrow">06 — Outcome</p>
+    <h2 class="section-title">After recognizing entry points, users confirmed their task path faster.</h2>
+    <div class="outcome-row">
+      <div class="outcome-card">
+        <div class="outcome-num before">10.0</div>
+        <div class="outcome-arrow">↓</div>
+        <div class="outcome-num after">4.0</div>
+        <div class="outcome-label">Average hesitation time (seconds) before selecting an entry point</div>
+      </div>
+      <div class="outcome-card" style="display:flex;flex-direction:column;justify-content:center;">
+        <p style="font-family:var(--sans);font-size:16px;font-weight:600;letter-spacing:-.01em;margin-bottom:12px;">The redesign changed key user behaviors.</p>
+        <p style="font-size:14px;color:var(--muted);line-height:1.65;">Users scanned less, committed to a path sooner, and reported higher confidence in their task direction.</p>
+      </div>
+    </div>
+    <div class="behavior-grid" style="margin-top:24px;">
+      <div class="behavior-card">
+        <div class="behavior-val">↓ 60%</div>
+        <div class="behavior-desc">Hesitation before entry point click</div>
+      </div>
+      <div class="behavior-card">
+        <div class="behavior-val">↑ Sign-in clarity</div>
+        <div class="behavior-desc">Users knew upfront if login was needed</div>
+      </div>
+      <div class="behavior-card">
+        <div class="behavior-val">↓ Errors</div>
+        <div class="behavior-desc">Fewer wrong-path selections</div>
+      </div>
+      <div class="behavior-card">
+        <div class="behavior-val">↑ Confidence</div>
+        <div class="behavior-desc">Users confirmed task path faster</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BACK -->
+<div class="wrap">
+  <div class="back-row reveal">
+    <a href="index.html" class="back-btn">← Back to all work</a>
+  </div>
+</div>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.07, rootMargin: '0px 0px -48px 0px' });
+  els.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
